@@ -1,0 +1,4 @@
+---
+# vars file for gitlab
+gituser: linux
+gitpass: GITLAB_USER_PASSWORD

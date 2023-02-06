@@ -1,0 +1,8 @@
+---
+- name: Get running-config and save it
+  ios_config:
+    backup: yes
+    backup_options:
+        filename: "{{ inventory_hostname }}.cfg"
+        dir_path: '/tmp/cisco_config'
+...

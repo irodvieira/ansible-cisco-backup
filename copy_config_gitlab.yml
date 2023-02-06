@@ -1,0 +1,5 @@
+- name: Default Playbook - Starting Deploy
+  hosts: all 
+  roles: 
+    - copy_config_gitlab
+ 

@@ -1,0 +1,4 @@
+- name: Default Playbook - Starting Deploy
+  hosts: all
+  roles: 
+    - copy_vblock_config_gitlab 

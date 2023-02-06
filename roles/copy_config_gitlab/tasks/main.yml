@@ -1,0 +1,47 @@
+---
+- name: Get current date
+  local_action: command date +%Y-%b-%d
+  register: date
+  
+- name: Clone a github repository
+  git:
+    repo: 'https://{{gituser}}:{{gitpass}}@gt-dci-gitlab.gtcs.local/dci-team/dci-configuration.git'
+    dest: '/ansible/git/'
+    clone: yes
+    update: yes  
+
+- name: Create a directory if it does not exist to VxRail
+  file:
+    path: '/ansible/git/Cisco/VxRail/Switches/running-config/{{date.stdout}}'
+    state: directory
+    mode: '0755'
+    
+- name: Copy actual running config 
+  copy: 
+    src: '/tmp/cisco_config/' 
+    dest: '/ansible/git/Cisco/VxRail/Switches/running-config/{{date.stdout}}'  
+
+- name: Create a directory if it does not exist
+  file:
+    path: '/tmp/script'
+    state: directory
+    mode: '0755'
+
+- name: Copy script gitlab 
+  copy: 
+    src: 'files/' 
+    dest: '/tmp/script/'
+
+- name: Push changes to Gitlab
+  script: '/tmp/script/git_push.sh'
+
+- name: Recursively remove directory
+  ansible.builtin.file:
+    path: '/tmp/cisco_config/'
+    state: absent
+
+- name: Recursively remove directory
+  ansible.builtin.file:
+    path: '/tmp/script/'
+    state: absent    
+...
